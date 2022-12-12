@@ -1,0 +1,48 @@
+h1{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 100px;
+    font-weight: bold;
+    color: khaki;
+    margin: 0px auto;
+}
+
+#topHero{
+    background-image: url("../images/pattern.jpeg");
+    background-position: center;
+    background-size: cover;
+    margin: 60px auto;
+    text-align: center;
+}
+
+.sectionTitle{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+    display: block;
+    margin-bottom: 30px;
+}
+
+#backGreen{
+    background-color: mediumspringgreen;
+}
+
+.blueSelling{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: blue;
+}
+
+#backRed{
+    background-color: lightcoral;
+}
+
+#backBlue{
+    background-color: skyblue;
+}
+
+#floaters{
+    width: 600px;
+    float: right;
+    clear: left;
+}
