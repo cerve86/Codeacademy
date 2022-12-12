@@ -3,4 +3,23 @@
     color: white;
     margin-top: 75px;
     text-align: center;
+    padding: 20px 0px;
+}
+
+#smallGritty{
+    height: 200px;
+    width: 200px;
+}
+
+#Gritter{
+    color: #4D00FF;
+    font-size: 100px;
+}
+
+#Social{
+    text-align: center;
+}
+
+.bold{
+    font-weight: 900;
 }
