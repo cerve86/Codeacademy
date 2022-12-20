@@ -23,6 +23,7 @@ body{
     padding: 20px;
     border-radius: 20px;
     font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 2px;
 }
 
 .floatingwhite{
@@ -38,7 +39,8 @@ body{
 
 .floatingwhite p{
     color: darkgray;
-    padding: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
     font-size: 18px;
 }
 
@@ -53,4 +55,16 @@ body{
     margin-top: 30px;
     background-color: white;
     width: 800px;
+}
+
+.code{
+    font-family: monospace;
+    background-color: blue;
+    color: white;
+}
+
+.tableFormat{
+    color: darkgray;
+    width: 700px;
+    margin: 0 auto;
 }
