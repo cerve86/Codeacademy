@@ -1,0 +1,16 @@
+#banner{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+    /* background: url('./html-css-cheatsheet-starting/resources/images/codecode.jpeg') center center no-repeat;*/
+    background-image: url(../../resources/images/codecode.jpeg);
+    background-size: cover;
+    opacity: 0.95;
+}
+
+#banner h1{
+    color: white;
+    background-color: black;
+}
