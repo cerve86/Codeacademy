@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>   
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <title>My HTML cheatsheet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="resources/css/styles.css">
 </head>
 
@@ -23,7 +24,7 @@
     </div> 
     <div class="floatingwhite tableContainer">
             <h2>Position</h2>
-            <p>well ... position is totally screwed up ... no other words</p>
+            <p>Well ... position is totally screwed up ... no other words!</p>
             <table class="tableFormat">
                 <thead>
                     <tr>
@@ -34,9 +35,29 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td><span class="code">static</span></td>
+                        <td>Static Position</td>
+                        <td>This is the default value for <span>position</span> property. It is a normal flow of the document.</td>
+                    </tr>
+                    <tr>
                         <td><span class="code">relative</span></td>
                         <td>Relative Position</td>
-                        <td>When a position is relative then</td>
+                        <td>Similar to static, but now we get the freedom to offset the position relative to itself.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="code">absolute</span></td>
+                        <td>Absolute Position</td>
+                        <td>Takes the element out of the regular flow of the document.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="code">fixed</span></td>
+                        <td>Fixed Position</td>
+                        <td>it behaves the same as <span class="code">absolute</span>, but now with no space created for the element in the document layout.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="code">sticky</span></td>
+                        <td>Sticky Position</td>
+                        <td>Here the element is positioned according to the document's normal flow, but is offset relative to its <span> nearest scrolling parent</span>.</td>
                     </tr>
                 </tbody>
             </table>

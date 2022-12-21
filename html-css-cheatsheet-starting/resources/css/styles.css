@@ -1,7 +1,7 @@
 body{
-    background-color: blue;
+    background-color: slategrey;
     color: white;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'Roboto', sans-serif;
 }
 
 #banner{
@@ -10,10 +10,11 @@ body{
     justify-content: center;
     align-items: center;
     height: 600px;
-    /* background: url('./html-css-cheatsheet-starting/resources/images/codecode.jpeg') center center no-repeat;*/
     background-image: url(../../resources/images/codecode.jpeg);
     background-size: cover;
     opacity: 0.95;
+    margin: 22px;
+    border-radius: 12px;
 }
 
 #banner h1{
@@ -28,7 +29,8 @@ body{
 
 .floatingwhite{
     width: 400px;
-    height: 400px;
+    height: auto;
+    padding-bottom: 20px;
     border-radius: 20px;
     background-color: white;
     position: relative;
@@ -49,6 +51,8 @@ body{
     font-size: 42px;
     padding-top: 20px;
     padding-left: 20px;
+    font-weight: 700;
+    text-align: center;
 }
 
 .tableContainer{
@@ -59,12 +63,22 @@ body{
 
 .code{
     font-family: monospace;
-    background-color: blue;
-    color: white;
+    background-color:rgba(250,239,240,0.78);
+    color: #b44437;
+    padding: 4px;
 }
 
 .tableFormat{
     color: darkgray;
     width: 700px;
     margin: 0 auto;
+}
+
+th{
+    color: black;
+}
+
+td{
+    padding: 8px;
+
 }
