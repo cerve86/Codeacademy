@@ -1,15 +1,61 @@
+h1{
+    font-family: 'Poppins', sans-serif; 
+    text-align: center;
+}
+
+.contentBox{
+    padding: 10px;
+    margin: 10px auto;
+    font-family: 'Poppins', sans-serif;
+    border: 2px solid #ebebeb;
+}
+
 .colorList{
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
     list-style: none;
     margin: 0;
     padding: 0;
-    border: 10px solid firebrick;
 }
 
 .colorList > *{
     flex: 1;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    line-height: 2em;
 }
 
+.colorList #blue{
+    display: block;
+    background-color: #2d5dcc;
+    color: white;
+}
+.colorList #pink{
+    display: block;
+    background-color: #d957d9;
+}
+.colorList #mintGreen{
+    display: block;
+    background-color: #4fe0b0;
+}
+.colorList #beige{
+    background-color: #efd9ca;
+}
+h4{
+    font-weight: 100;    
+}
+.pink{
+    color: white;
+    background-color: #d957d9;
+    padding: 2px;
+}
+
+.blue{
+    color: white;
+    background-color: #2d5dcc;
+    padding: 2px;
+}
