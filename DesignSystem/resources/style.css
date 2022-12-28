@@ -1,6 +1,9 @@
+.topHero{
+    text-align: center;
+}
+
 h1{
     font-family: 'Poppins', sans-serif; 
-    text-align: center;
 }
 
 .contentBox{
@@ -10,7 +13,7 @@ h1{
     border: 2px solid #ebebeb;
 }
 
-.colorList{
+.contentCard{
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -20,34 +23,35 @@ h1{
     padding: 0;
 }
 
-.colorList > *{
+.contentCard > *{
     flex: 1;
     text-align: center;
     padding: 20px;
     border-radius: 8px;
-    font-weight: 700;
     line-height: 2em;
 }
 
-.colorList #blue{
+.contentCard #blue{
     display: block;
+    font-weight: 700;
     background-color: #2d5dcc;
     color: white;
 }
-.colorList #pink{
+.contentCard #pink{
     display: block;
+    font-weight: 700;
     background-color: #d957d9;
 }
-.colorList #mintGreen{
+.contentCard #mintGreen{
     display: block;
+    font-weight: 700;
     background-color: #4fe0b0;
 }
-.colorList #beige{
+.contentCard #beige{
     background-color: #efd9ca;
+    font-weight: 700;
 }
-h4{
-    font-weight: 100;    
-}
+
 .pink{
     color: white;
     background-color: #d957d9;
@@ -58,4 +62,24 @@ h4{
     color: white;
     background-color: #2d5dcc;
     padding: 2px;
+}
+
+.contentCard #sourceFont{
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.contentCard #nunitoFont{
+    font-family: 'Nunito', sans-serif;
+}
+
+.bold{
+    font-weight: 800;
+}
+
+.italic{
+    font-style: italic;
+}
+
+.light{
+    font-weight: 100;
 }
