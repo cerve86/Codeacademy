@@ -83,3 +83,8 @@ h1{
 .light{
     font-weight: 100;
 }
+
+.contentCard li h1{
+    text-align: center;
+}
+
