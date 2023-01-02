@@ -6,12 +6,41 @@ html, body{
     color: seashell;
     background-color: black;
     opacity: 0.9;
+    text-align: center;
 }
 
 .navigation{
-    margin: 0 auto;
+    margin: 10px 10px;
+    display: flex;
+    max-height: 69px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid seashell;
 }
 
 .navigation img{
     height: 50px;
+}
+
+.navigation li{
+    list-style: none;
+    display: inline-block;
+    text-decoration: underline;
+    padding: 10px;
+}
+
+.navigation li a{
+    color:seashell;
+}
+
+.jumboContainer{
+    display: flex;
+    height: 700px;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../img/img-mission-background.jpg');
+    background-position: center;
+    background-size: cover;
 }
