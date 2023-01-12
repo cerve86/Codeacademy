@@ -14,6 +14,14 @@ html {
   text-align: center;
 }
 
+.logo{
+  color:#4a4a4a;
+  font-size: 1.5rem;
+  font-family: 'Roboto';
+  text-decoration: none;
+
+}
+
 .button {
   border-radius: 4px;
   background-color: #4a4a4a;
@@ -38,6 +46,7 @@ html {
 
 header {
   position: fixed;
+  height: 85px;
   width: 100%;
   border-bottom: solid 1px #c6c1c1;
   background-color: white;
@@ -45,7 +54,7 @@ header {
 
 header .content {
   display: flex;
-  align-items: center;
+  justify-content: center;
   padding: 1.875rem;
 }
 
@@ -59,6 +68,7 @@ header nav ul {
 
 nav li {
   padding-left: 3.5rem;
+  list-style: none; 
 }
 
 nav a {
@@ -66,6 +76,7 @@ nav a {
   line-height: 1.6;
   font-size: 1rem;
   color: #4a4a4a;
+  text-decoration: none;
 }
 
 header .icon {
@@ -114,9 +125,16 @@ header .mobile {
 
 #sign-up-section {
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: start;
+  align-items: center;
   height: 43.5rem;
+  padding-left: 100px;
+}
+
+.banner{
+  background-image: url('../images/banner-landingpage.jpg');
+  background-size: cover;
+  overflow: hidden;
 }
 
 #sign-up-cta {
