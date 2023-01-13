@@ -369,12 +369,15 @@ header .mobile {
 }
 
 #quotes-section content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 5rem 0;
 }
 
 #quotes-section quote{
   padding-right: 1.875rem;
-  font-family: 'Spectral', serif;
+  font-family: "Palatino", serif;
   font-size: 1.875rem;
   line-height: 1.1;
   font-style: italic;
@@ -385,9 +388,9 @@ header .mobile {
   height: 1.875rem;
 }
 
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 895px) {
   #quotes-section content {
-    padding: 1.875rem .625rem;
+    padding: 3rem 1.5rem;
   }
 
   #quotes-section quote {
