@@ -1,30 +1,40 @@
+*{
+    box-sizing: border-box;
+}
+
 html{
     font-size: 16px;
-    --white: lightgrey;
+    font-family: 'Source Sans Pro', sans-serif;
+    --white: white;
     --textColor: #232C33;
     --blueElectric: #470EF4;
+    --redcta: #CE2C4F;
 }
 
 body{
     padding: 2rem;
+    max-width: 80%;
+    margin: auto;
 }
 
 h1{
     font-family: 'Noto Serif', serif;
-    font-size: 2rem;
+    font-size: 2.1rem;
     font-weight: 700;
+    line-height: 3rem;
     color: var(--white);    
 }
 
 p{
-    font-family: 'Source Sans Pro', sans-serif; 
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 400;
+    line-height: 2rem;
     color: var(--white);
 }
 
-.container{
-    height: 5rem;
+
+.navContainer{
+    height: 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -46,17 +56,58 @@ a:hover{
     cursor: pointer;
 }
 
+.getinTouch button{
+    background-color: var(--redcta);
+    border: 0.2rem solid var(--white);
+    color: var(--white);
+    padding: 1rem 2.6rem;
+    border-radius: 2rem;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.05rem;
+}
+
 .intro-content{
-    margin-top: 2rem;
     display: flex;
+    margin-top: 2rem;
     gap: 1.5rem;
-    justify-content: space-around;
-    max-height: 600px;
+    justify-content: center;
 }
 
 .presentationCard{
-    width: 50%;
     background-color: var(--blueElectric);
-    padding: 2rem;
-    border-radius: 1rem;
+    padding: 3rem;
+    border-radius: 3rem;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+    justify-content: space-around;
+}
+
+.presentationCard p{
+    padding: 2rem 0px;
+}
+
+.andreaPicture{
+    border-radius: 3rem;
+    min-height: 541px;
+    min-width: 438px;
+}
+
+.getinTouch{
+    display: flex;
+    text-align: center;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Media queries*/
+
+@media only screen and (max-width:684px){
+    .intro-content{
+        flex-direction: column;
+    }
 }
