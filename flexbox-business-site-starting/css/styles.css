@@ -1,0 +1,62 @@
+html{
+    font-size: 16px;
+    --white: lightgrey;
+    --textColor: #232C33;
+    --blueElectric: #470EF4;
+}
+
+body{
+    padding: 2rem;
+}
+
+h1{
+    font-family: 'Noto Serif', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);    
+}
+
+p{
+    font-family: 'Source Sans Pro', sans-serif; 
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--white);
+}
+
+.container{
+    height: 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navLinks{
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+    color: var(--textColor);
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+a:hover{
+    cursor: pointer;
+}
+
+.intro-content{
+    margin-top: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: space-around;
+    max-height: 600px;
+}
+
+.presentationCard{
+    width: 50%;
+    background-color: var(--blueElectric);
+    padding: 2rem;
+    border-radius: 1rem;
+}
