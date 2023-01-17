@@ -32,7 +32,6 @@ p{
     color: var(--white);
 }
 
-/*
 .navContainer{
     height: 2rem;
     display: flex;
@@ -46,7 +45,6 @@ p{
     list-style: none;
     align-items: center;
 }
-*/
 
 a{
     text-decoration: none;
@@ -82,13 +80,13 @@ a:hover{
     letter-spacing: 0.05rem;
 }
 
-/*.intro-content{
+.intro-content{
     display: flex;
     margin-top: 2rem;
     gap: 1.5rem;
     justify-content: center;
 }
-*/
+
 .contentMain{
     margin-top: 2rem;
     display: grid;
@@ -106,28 +104,25 @@ a:hover{
     display: flex;
     justify-content: space-around;
     grid-column: 1/ 3;
-}
-/*
     min-width: 540px;
     max-width: 615px;
-*/
+
+}
 
 .presentationCard p{
     padding: 2rem 0px;
 }
 
 .andreaPicture{
-    grid-column: 3 / 4;
-    border-radius: 3rem;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     width: auto;
-    /*
     flex-grow: 1;
-    min-height: 541px;
-    min-width: 438px;
-    */
+}
+.container img{
+    max-width: 100%;
+    border-radius: 3rem;
 }
 
 .getinTouch{
