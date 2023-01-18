@@ -8,6 +8,11 @@
     --redcta: #CE2C4F;
 }
 
+body{
+    width: 80%;
+    margin: 0 auto;
+}
+
 h1{
     font-family: 'Noto Serif', serif;
     font-size: 2.1rem;
@@ -43,4 +48,31 @@ a:hover{
     font-size: 1rem;
     font-weight: normal;
     letter-spacing: 0.05rem;
+}
+
+#projects{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    background-color: #232C33;
+    column-gap: 1.5rem;
+}
+
+.introduction{
+    grid-column-start: 1;
+    grid-column-end: span 3;
+    background-color: var(--blueElectric);
+}
+
+.case{
+    background-color: #CE2C4F;
+}
+
+#projectPT{
+    grid-column-start: 1;
+    grid-column-end: span 2;
+}
+
+#projectEV{
+    grid-column-start: 3;
+    grid-column-end: span 2;
 }
