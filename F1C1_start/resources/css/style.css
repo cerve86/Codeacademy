@@ -46,8 +46,8 @@ html {
 
 header {
   position: fixed;
-  height: 85px;
   width: 100%;
+  z-index: 100;
   border-bottom: solid 1px #c6c1c1;
   background-color: white;
 }
@@ -244,12 +244,20 @@ header .mobile {
 .feature .image-container {
   width: 90%;
   height: 65%;
-  margin: 0 auto;
+  margin: 0px auto;
+}
+
+/* In this case the max-width to 100% constrain the images in the boundaries set by the parent container*/
+
+.feature img{
+  display: block;
+  max-width: 100%;
 }
 
 .feature h2 {
+  padding-top: 2rem;
   padding-bottom: .5rem;
-  font-size: 2.25rem;
+  font-size: 1.75rem;
   font-weight: bold;
   color: #4a4a4a;
 }
@@ -294,7 +302,7 @@ header .mobile {
 }
 
 #filters-section .content {
-  padding: 0 .625rem;
+  padding: 0.625rem;
   margin-bottom: 5rem;
 }
 
@@ -302,6 +310,7 @@ header .mobile {
   font-size: 2.25rem;
   font-weight: bold;
   color: white;
+  font-family: 'Roboto', sans-serif;
 }
 
 #filters-section .content h3 {
@@ -309,11 +318,18 @@ header .mobile {
   line-height: 1.4;
   font-weight: 300;
   color: white;
+  font-family: 'Roboto', sans-serif
 }
 
 #filters-section .images-container {
+  display: flex;
   max-width: 100%;
   padding: 0 1%;
+  overflow: hidden;
+}
+
+#filters-section .image-container img{
+  max-width: 100%;
 }
 
 @media only screen and (max-width: 760px) {
@@ -352,11 +368,14 @@ header .mobile {
   background-color: #f3f3f3;
 }
 
-#quotes-section content {
+#quotes-section .content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 5rem 0;
 }
 
-#quotes-section quote {
+#quotes-section .quote{
   padding-right: 1.875rem;
   font-family: "Palatino", serif;
   font-size: 1.875rem;
@@ -365,13 +384,13 @@ header .mobile {
   color: #4a4a4a;
 }
 
-#quotes-section quote-citation {
+#quotes-section .quote-citation {
   height: 1.875rem;
 }
 
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 895px) {
   #quotes-section content {
-    padding: 1.875rem .625rem;
+    padding: 3rem 1.5rem;
   }
 
   #quotes-section quote {
