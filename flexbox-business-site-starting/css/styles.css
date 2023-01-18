@@ -15,6 +15,7 @@ body{
     padding-top: 1rem;
     max-width: 80%;
     margin: auto;
+    height: 100vw;
 }
 
 h1{
@@ -52,6 +53,14 @@ p{
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.goTo {
+    padding: 0.75rem 3.25rem;
+    background-color: var(--white);
+    border-radius: 1.5rem;
+    border-style: none;
+    margin-top: 30%;
 }
 
 .navLinks{
@@ -109,13 +118,8 @@ a:hover{
     flex-direction: column;
     justify-content: center;
     display: flex;
-    justify-content: space-around;
 }
 
-    /*
-    min-width: 540px;
-    max-width: 615px;
-    */
 
 .presentationCard p{
     padding: 2rem 0px;
@@ -126,11 +130,6 @@ a:hover{
     width: 100%;
 }
 
-    /*
-    min-height: 541px;
-    min-width: 438px;
-    */
-
 .getinTouch{
     display: flex;
     text-align: center;
@@ -139,29 +138,6 @@ a:hover{
     flex-wrap: wrap;
     gap: 1rem;
 }
-
-.projects_content{
-    margin-top: 2rem;
-    display: flex;
-    gap: 1rem;
-}
-
-.project_PT{
-    flex: 1;
-}
- 
-.project_PT img{
-    width: 100%;
-}
-
-.project_PT2{
-    flex: 1;
-}
-
-.project_PT2 img{
-    width: 100%;
-}
-
 
 /* Media queries*/
 
@@ -190,7 +166,7 @@ a:hover{
 
 /*CSS from ALLY*/
 
-.cases {
+.projects {
     margin-top: 1.5rem;
     display: flex;
     flex-wrap: wrap;
@@ -198,13 +174,14 @@ a:hover{
 }
 
 .case {    
-    width: 300px;
-    min-height: 300px;
+    width: 500px;
+    min-height: 350px;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    border-radius: 2rem;
 }
 
-#goldenapple {
+#casePT {
     background-image: url("../images/AirPtWork.png");
     background-repeat: no-repeat;
     background-position: center;
@@ -212,18 +189,62 @@ a:hover{
     flex-grow: 1;
 }
 
-#rostov {
-    background-image: url("../images/AirPtWork.png");
+#caseLube {
+    background-image: url("../images/AnalystApp.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    flex-grow: 1;
+}
+
+#caseSales {
+    background-image: url("../images/SalesApp.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    flex-grow: 1;
+}
+
+
+#casePT h3{
+    color: var(--textColor);
+}
+
+#caseEV {
+    background-image: url("../images/EVChargeWork.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     flex-grow: 1;
 }
 .description {
-    background-color: rgba(0, 0, 0, 0.85);
     color: white;
-    width: 100%;
     margin: 0;
-    padding: 30px 30px;
+    padding-left: 55%;
 }
 
+#caseSales .description{
+    padding-left: 12%;
+}
+
+.bye{
+    background-color: #F1F1F1;
+    width: 100%;
+    text-align: center;
+    color: var(--blueElectric);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bye p{
+    color: var(--blueElectric);
+    font-family: 'Noto Serif', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 3rem;
+    padding: 20px;
+    border: 4px solid var(--blueElectric);
+    border-radius: 1rem;
+    margin-bottom: 1.45rem;
+}
