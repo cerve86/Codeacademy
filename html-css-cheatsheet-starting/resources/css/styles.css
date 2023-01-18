@@ -1,0 +1,84 @@
+body{
+    background-color: slategrey;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+#banner{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+    background-image: url(../../resources/images/codecode.jpeg);
+    background-size: cover;
+    opacity: 0.95;
+    margin: 22px;
+    border-radius: 12px;
+}
+
+#banner h1{
+    color: white;
+    background-color: blue;
+    font-size: 64px;
+    padding: 20px;
+    border-radius: 20px;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 2px;
+}
+
+.floatingwhite{
+    width: 400px;
+    height: auto;
+    padding-bottom: 20px;
+    border-radius: 20px;
+    background-color: white;
+    position: relative;
+    margin: 0 auto;
+    top: -80px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.floatingwhite p{
+    color: darkgray;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 18px;
+}
+
+.floatingwhite h2{
+    color: blue;
+    font-size: 42px;
+    padding-top: 20px;
+    padding-left: 20px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.tableContainer{
+    margin-top: 30px;
+    background-color: white;
+    width: 800px;
+}
+
+.code{
+    font-family: monospace;
+    background-color:rgba(250,239,240,0.78);
+    color: #b44437;
+    padding: 4px;
+}
+
+.tableFormat{
+    color: darkgray;
+    width: 700px;
+    margin: 0 auto;
+}
+
+th{
+    color: black;
+}
+
+td{
+    padding: 8px;
+
+}
