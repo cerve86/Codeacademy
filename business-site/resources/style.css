@@ -50,17 +50,90 @@ a:hover{
     letter-spacing: 0.05rem;
 }
 
-#projects{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    background-color: #232C33;
-    column-gap: 1.5rem;
+nav{
+    height: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.links{
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    align-items: center;
+}
+
+a{
+    text-decoration: none;
+    color: var(--textColor);
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+a:hover{
+    cursor: pointer;
+}
+
+.presentationCard{
+    background-color: var(--blueElectric);
 }
 
 .introduction{
     grid-column-start: 1;
-    grid-column-end: span 3;
+    grid-column-end: 3;
+    display: flex;
     background-color: var(--blueElectric);
+    padding: 3rem;
+    border-radius: 3rem;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.introduction button{
+    background-color: var(--redcta);
+    border: 0.2rem solid var(--white);
+    color: var(--white);
+    padding: 1rem 2.6rem;
+    border-radius: 2rem;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.05rem;
+}
+
+.pictureAndrea{
+    grid-column-start: 3;
+    grid-column-end: 5;
+}
+
+.pictureAndrea img{
+    border-radius: 3rem;
+    width: 100%;
+    height: 100%;
+}
+
+li{
+    list-style: none;
+}
+
+#projects{
+    display: grid;
+    margin-top: 2rem;
+    grid-template-columns: repeat(4, 1fr);
+    background-color: #232C33;
+    column-gap: 1.5rem;
+    row-gap: 1.5rem;
+}
+
+/*grid-template-columns: repeat(autofit, minmax(100px, 1fr));*/
+
+.getinTouch{
+    display: flex;
+    text-align: center;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .case{
@@ -69,10 +142,18 @@ a:hover{
 
 #projectPT{
     grid-column-start: 1;
-    grid-column-end: span 2;
+    grid-column-end: 3;
 }
 
 #projectEV{
     grid-column-start: 3;
-    grid-column-end: span 2;
+    grid-column-end: 5;
+}
+
+#projectEV img{
+    width: 100%;
+}
+
+#projectPT img{
+    width: 100%;
 }
