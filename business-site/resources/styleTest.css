@@ -1,0 +1,47 @@
+
+*{
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: 'Outfit', sans-serif;
+    --white: white;
+    --background: #F2F2F2;
+    --HNKgreen: #058E3F;
+    --accentBlack: #2D3345;
+    --subtitles: #767B86;
+}
+
+/*
+https://fonts.google.com/specimen/Outfit
+*/
+
+h1{
+    font-size: 55px;
+}
+
+h2{
+    font-size: 32px;
+}
+
+h3{
+    font-size:  26px;
+}
+
+h4{
+    font-size: 22px;
+}
+
+.background-modal-title {
+    color: var(--background);
+    border-radius: 21px;
+}
+
+.modal-container{
+    color:var(--white);
+    box-shadow: 0 5px 19px 0 rgba(0,0,0,0.14);
+    border-radius: 24px;
+}
+
+button{
+    background: var(--HNKgreen);
+    border-radius: 8px;
+}
