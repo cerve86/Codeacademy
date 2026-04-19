@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>REP — New Contract</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:#00A651;--green-dk:#007A3B;--green-lt:#E8F8EF;
+  --red:#E02020;--red-lt:#FEF0F0;
+  --amber:#D97706;--amber-lt:#FEF8EC;
+  --blue:#2D7DD2;
+  --bg:#F2F2F7;--white:#FFFFFF;
+  --border:#E5E5EA;--border2:#D1D1D6;
+  --text:#1C1C1E;--text2:#48484A;--text3:#8E8E93;--text4:#C7C7CC;
+  --pill:#F2F2F7;
+  --sh:0 1px 3px rgba(0,0,0,.08),0 0 0 .5px rgba(0,0,0,.04);
+  --r:12px;--rsm:8px;
+  --font:'Inter',-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font);background:#1C1C1E;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px 16px}
+.phone{width:393px;min-height:852px;background:var(--bg);border-radius:50px;overflow:hidden;box-shadow:0 0 0 10px #3A3A3C,0 30px 80px rgba(0,0,0,.6);display:flex;flex-direction:column}
+
+/* Status bar */
+.sb{background:var(--white);padding:14px 28px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.sb-time{font-size:15px;font-weight:600;color:var(--text)}
+.sb-icons{display:flex;align-items:center;gap:6px}
+
+/* Nav */
+.nav{background:var(--white);border-bottom:.5px solid var(--border);padding:10px 16px 12px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.nav-back{width:32px;height:32px;border-radius:50%;background:var(--pill);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.nav-back svg{width:16px;height:16px;color:var(--green)}
+.nav-info{flex:1;min-width:0}
+.nav-title{font-size:15px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.nav-acts{display:flex;gap:6px;flex-shrink:0}
+.nav-btn{width:32px;height:32px;border-radius:50%;background:var(--pill);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.nav-btn svg{width:16px;height:16px;color:var(--text2)}
+
+/* Calc bar — always visible, dims when no data */
+.calc-bar{background:var(--white);border-bottom:.5px solid var(--border);display:flex;flex-shrink:0;transition:opacity .2s}
+.calc-bar.dim{opacity:.4}
+.cs{flex:1;padding:7px 14px;border-right:.5px solid var(--border)}
+.cs:last-child{border-right:none}
+.cs-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:2px}
+.cs-val{font-size:14px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;line-height:1.2}
+.cs-val.g{color:var(--green)}.cs-val.w{color:var(--amber)}.cs-val.r{color:var(--red)}
+.cs-tag{font-size:10px;font-weight:600;padding:1px 6px;border-radius:20px;display:inline-block;margin-top:2px}
+.ct-ok{background:var(--green-lt);color:var(--green)}
+.ct-warn{background:var(--amber-lt);color:var(--amber)}
+.ct-over{background:var(--red-lt);color:var(--red)}
+
+/* Step progress */
+.stepper{background:var(--white);padding:10px 24px 12px;display:flex;align-items:center;flex-shrink:0;border-bottom:.5px solid var(--border)}
+.sn{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex-shrink:0}
+.sc{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;transition:all .2s}
+.sc.todo{background:var(--pill);color:var(--text3);border:1.5px solid var(--border2)}
+.sc.active{background:var(--green);color:white;border:none}
+.sc.done{background:var(--green-lt);color:var(--green);border:1.5px solid rgba(0,166,81,.4)}
+.sc.done svg{width:12px;height:12px}
+.sl{font-size:10px;font-weight:500;color:var(--text3);white-space:nowrap}
+.sl.active{color:var(--green);font-weight:600}.sl.done{color:var(--green)}
+.step-line{flex:1;height:1.5px;background:var(--border);margin:0 6px;margin-bottom:14px;transition:background .3s}
+.step-line.done{background:var(--green)}
+
+/* Scroll */
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 16px 20px}
+.scroll::-webkit-scrollbar{display:none}
+
+/* Screens */
+.scr{display:none}
+.scr.on{display:block;animation:fu .2s ease}
+@keyframes fu{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* Section label */
+.sec{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);padding:6px 2px 8px}
+
+/* Cards */
+.card{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:10px;overflow:hidden}
+
+/* Outlet rows */
+.orow{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--white);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:8px;cursor:pointer;transition:all .12s;border:1.5px solid transparent}
+.orow:active{background:#F5F5F5}
+.orow.sel{border-color:var(--green);background:var(--green-lt)}
+.oav{width:42px;height:42px;border-radius:10px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--green);flex-shrink:0}
+.oname{font-size:14px;font-weight:600;color:var(--text)}
+.osub{font-size:12px;color:var(--text3);margin-top:1px}
+.ochk{width:22px;height:22px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ochk svg{width:12px;height:12px;color:white}
+.otag{font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;background:var(--green-lt);color:var(--green);flex-shrink:0}
+
+/* Contract panel — slides in after outlet pick */
+.cpanel{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:10px;overflow:hidden;max-height:0;opacity:0;transition:max-height .4s ease,opacity .3s ease,margin .3s}
+.cpanel.open{max-height:1400px;opacity:1}
+.cpinner{padding:14px}
+
+/* Outlet mini header in contract panel */
+.omini{display:flex;align-items:center;gap:10px;background:var(--green-lt);border-radius:var(--rsm);padding:10px 12px;margin-bottom:14px}
+.omini-av{width:36px;height:36px;border-radius:8px;background:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green);flex-shrink:0}
+.omini-nm{font-size:13px;font-weight:600;color:var(--green-dk)}
+.omini-sub{font-size:11px;color:var(--green);margin-top:1px}
+.change-btn{font-size:12px;color:var(--green);font-weight:600;background:none;border:none;cursor:pointer;padding:0;flex-shrink:0;font-family:var(--font)}
+
+/* Form */
+.fg{margin-bottom:10px}
+.fl{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px;display:flex;align-items:center;gap:4px}
+.req{color:var(--red);font-size:10px}
+.fhint{font-size:10px;color:var(--text3);font-weight:400}
+.fi{width:100%;background:var(--white);border:1.5px solid var(--border2);border-radius:var(--rsm);padding:11px 13px;font-size:15px;font-family:var(--font);color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s;appearance:none;-webkit-appearance:none}
+.fi::placeholder{color:var(--text4)}
+.fi:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,166,81,.1)}
+.fi.err{border-color:var(--red)}
+.sw{position:relative}
+.sw::after{content:'';position:absolute;right:13px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-top-color:var(--text3);margin-top:3px;pointer-events:none}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ferr{font-size:11px;color:var(--red);margin-top:3px;display:none}
+.ferr.show{display:block}
+
+/* Toggle */
+.tgl-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:var(--white);border:1.5px solid var(--border2);border-radius:var(--rsm);margin-bottom:10px}
+.tgl-nm{font-size:14px;font-weight:500;color:var(--text)}
+.tgl-sb{font-size:11px;color:var(--text3)}
+.tgl{width:48px;height:28px;border-radius:14px;background:#E5E5EA;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.tgl.on{background:var(--green)}
+.tgl-th{width:24px;height:24px;border-radius:50%;background:white;box-shadow:0 2px 4px rgba(0,0,0,.2);position:absolute;top:2px;left:2px;transition:left .2s}
+.tgl.on .tgl-th{left:22px}
+
+/* SKU cards */
+.bcard{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:10px;overflow:hidden}
+.bhdr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 0}
+.bname{font-size:13px;font-weight:700;color:var(--text)}
+.btot{font-size:12px;color:var(--text3);font-variant-numeric:tabular-nums}
+.btot.live{color:var(--green);font-weight:600}
+.skrow{padding:9px 14px;border-top:.5px solid var(--border);display:flex;align-items:center;gap:8px}
+.sk-lft{flex:1}
+.sk-pack{font-size:13px;font-weight:500;color:var(--text)}
+.sk-rate{font-size:11px;color:var(--text3);margin-top:1px}
+.sk-rgt{display:flex;align-items:center;gap:6px;flex-shrink:0}
+
+/* Quick-pick presets */
+.presets{display:flex;gap:3px}
+.pb{padding:4px 7px;border-radius:6px;border:1px solid var(--border2);background:var(--pill);font-size:11px;font-weight:600;color:var(--text3);cursor:pointer;font-family:var(--font);transition:all .1s;line-height:1}
+.pb.ap{background:var(--green-lt);color:var(--green);border-color:rgba(0,166,81,.4)}
+.pb:active{background:var(--border)}
+
+/* Volume input */
+.vi{width:64px;text-align:right;padding:7px 8px;font-size:15px;font-weight:600;font-family:var(--font);color:var(--text);background:var(--pill);border:1.5px solid var(--border2);border-radius:var(--rsm);outline:none;appearance:none;font-variant-numeric:tabular-nums}
+.vi:focus{background:var(--white);border-color:var(--green);box-shadow:0 0 0 3px rgba(0,166,81,.1)}
+.vi.hv{background:var(--green-lt);border-color:rgba(0,166,81,.4);color:var(--green)}
+.sk-spend{font-size:11px;color:var(--text3);min-width:50px;text-align:right;font-variant-numeric:tabular-nums}
+.sk-spend.live{color:var(--green);font-weight:600}
+
+/* POSM collapsible */
+.posm-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer;background:var(--white);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:8px}
+.posm-nm{font-size:14px;font-weight:600;color:var(--text)}
+.posm-sb{font-size:12px;color:var(--text3);margin-top:1px}
+.pchev{transition:transform .25s;color:var(--text3);flex-shrink:0}
+.pchev.open{transform:rotate(180deg)}
+.posm-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.posm-body.open{max-height:800px}
+.pi{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--white);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:7px}
+.pi-nm{flex:1;font-size:13px;color:var(--text);line-height:1.3}
+.pi-step{display:flex;align-items:center;border:1.5px solid var(--border2);border-radius:var(--rsm);overflow:hidden;flex-shrink:0}
+.pi-btn{width:32px;height:32px;background:var(--pill);border:none;font-size:19px;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--font)}
+.pi-btn:active{background:var(--border)}
+.pi-val{min-width:34px;text-align:center;font-size:14px;font-weight:600;color:var(--text);background:var(--white);padding:6px 2px;border-left:.5px solid var(--border);border-right:.5px solid var(--border);font-variant-numeric:tabular-nums}
+
+/* Info strip */
+.info{display:flex;gap:8px;align-items:flex-start;padding:9px 12px;background:#EFF6FF;border-radius:var(--rsm);margin-bottom:10px}
+.info svg{width:14px;height:14px;color:var(--blue);flex-shrink:0;margin-top:1px}
+.info p{font-size:12px;color:#1D4ED8;line-height:1.5}
+
+/* Review */
+.rhero{border-radius:var(--r);padding:14px;margin-bottom:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.rh-lbl{font-size:10px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.rh-val{font-size:16px;font-weight:700;color:white;line-height:1;font-variant-numeric:tabular-nums}
+.rh-val.sm{font-size:13px;line-height:1.3}
+.rcard{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:10px;overflow:hidden}
+.rchdr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:.5px solid var(--border)}
+.rct{font-size:13px;font-weight:700;color:var(--text)}
+.rce{font-size:12px;color:var(--green);font-weight:600;background:none;border:none;cursor:pointer;padding:0;font-family:var(--font)}
+.rrow{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:.5px solid var(--border);font-size:13px}
+.rrow:last-child{border-bottom:none}
+.rl{color:var(--text3)}
+.rv{font-weight:600;color:var(--text);text-align:right;font-variant-numeric:tabular-nums}
+.rv.g{color:var(--green)}.rv.w{color:var(--amber)}.rv.r{color:var(--red)}
+.rrow.total{background:rgba(0,166,81,.04)}
+.rrow.total .rl{font-weight:700;color:var(--text)}
+.rrow.total .rv{font-size:15px}
+.sp{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.sp.ok{background:var(--green-lt);color:var(--green)}
+.sp.warn{background:var(--amber-lt);color:var(--amber)}
+.sp.over{background:var(--red-lt);color:var(--red)}
+.sp-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* AI letter */
+.ai-box{background:#F8F9FF;border:1px solid #E0E4FF;border-radius:var(--rsm);padding:12px;font-size:13px;line-height:1.7;color:var(--text);white-space:pre-wrap;margin-top:8px}
+.ai-box.loading{color:var(--text3);font-style:italic}
+
+/* Search */
+.srch{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);display:flex;align-items:center;gap:8px;padding:11px 14px;margin-bottom:10px}
+.srch svg{color:var(--text3);flex-shrink:0;width:16px;height:16px}
+.srch input{flex:1;border:none;outline:none;font-size:15px;font-family:var(--font);color:var(--text);background:transparent}
+.srch input::placeholder{color:var(--text4)}
+
+/* CTA */
+.cta-area{padding:10px 16px 14px;background:var(--white);border-top:.5px solid var(--border);flex-shrink:0}
+.cta{width:100%;background:var(--green);color:white;border:none;border-radius:100px;padding:15px;font-size:15px;font-weight:700;font-family:var(--font);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
+.cta:active{background:var(--green-dk)}
+.cta:disabled{background:var(--text4);cursor:not-allowed}
+.cta svg{width:17px;height:17px;flex-shrink:0}
+.cta-ghost{width:100%;background:transparent;color:var(--green);border:1.5px solid var(--green);border-radius:100px;padding:12px;font-size:14px;font-weight:600;font-family:var(--font);cursor:pointer;margin-top:8px;transition:background .15s}
+.cta-ghost:active{background:var(--green-lt)}
+
+/* Spinner */
+.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:sp .7s linear infinite;flex-shrink:0}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* Success */
+.success{display:flex;flex-direction:column;align-items:center;padding:48px 20px 20px;text-align:center}
+.sicon{width:72px;height:72px;border-radius:50%;background:var(--green-lt);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.sicon svg{width:36px;height:36px;color:var(--green)}
+
+/* Responsive */
+@media(max-width:440px){
+  body{padding:0;background:var(--bg);align-items:flex-start}
+  .phone{width:100%;min-height:100vh;border-radius:0;box-shadow:none}
+  .sb{padding-top:env(safe-area-inset-top,14px)}
+  .cta-area{padding-bottom:env(safe-area-inset-bottom,14px)}
+}
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- Status bar -->
+<div class="sb">
+  <span class="sb-time">9:41</span>
+  <div class="sb-icons">
+    <svg width="17" height="12" viewBox="0 0 17 12" fill="var(--text)"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12" fill="var(--text)"><path d="M8 2.4C5.6 2.4 3.4 3.4 1.8 5L0 3.2C2.1 1.2 4.9 0 8 0s5.9 1.2 8 3.2L14.2 5C12.6 3.4 10.4 2.4 8 2.4z"/><path d="M8 6c-1.4 0-2.6.6-3.5 1.5L3 5.8C4.3 4.7 6.1 4 8 4s3.7.7 5 1.8L11.5 7.5C10.6 6.6 9.4 6 8 6z"/><circle cx="8" cy="10" r="2"/></svg>
+    <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="var(--text)" stroke-opacity=".35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="var(--text)"/><path d="M23 4.5v3a1.5 1.5 0 000-3z" fill="var(--text)" fill-opacity=".4"/></svg>
+  </div>
+</div>
+
+<!-- Nav -->
+<div class="nav">
+  <button class="nav-back" onclick="handleBack()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <div class="nav-info">
+    <div class="nav-title" id="ntitle">New Contract</div>
+    <div class="nav-sub" id="nsub">Select outlet to begin</div>
+  </div>
+  <div class="nav-acts">
+    <button class="nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+    <button class="nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+  </div>
+</div>
+
+<!-- Live calc bar -->
+<div class="calc-bar dim" id="cbar">
+  <div class="cs">
+    <div class="cs-lbl">Volume</div>
+    <div class="cs-val" id="cv">—</div>
+  </div>
+  <div class="cs">
+    <div class="cs-lbl">MYR/HL</div>
+    <div class="cs-val g" id="cr">—</div>
+  </div>
+  <div class="cs">
+    <div class="cs-lbl">Net contribution</div>
+    <div class="cs-val" id="cn">—</div>
+    <div class="cs-tag ct-ok" id="ctag" style="display:none"></div>
+  </div>
+</div>
+
+<!-- Step progress -->
+<div class="stepper" id="stepper">
+  <div class="sn" onclick="goto(1)">
+    <div class="sc active" id="sc1"><span>1</span></div>
+    <div class="sl active" id="sl1">Outlet &amp; Terms</div>
+  </div>
+  <div class="step-line" id="ln1"></div>
+  <div class="sn" onclick="goto(2)">
+    <div class="sc todo" id="sc2"><span>2</span></div>
+    <div class="sl" id="sl2">Volumes</div>
+  </div>
+  <div class="step-line" id="ln2"></div>
+  <div class="sn" onclick="goto(3)">
+    <div class="sc todo" id="sc3"><span>3</span></div>
+    <div class="sl" id="sl3">Review</div>
+  </div>
+</div>
+
+<!-- Content -->
+<div class="scroll" id="mscroll">
+
+  <!-- STEP 1: Outlet + Contract -->
+  <div class="scr on" id="s1">
+    <div class="srch">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search outlet or UCC…" oninput="filterO(this.value)">
+    </div>
+    <div class="sec">Outlets on your journey plan</div>
+    <div id="olist"></div>
+
+    <!-- Contract panel slides open after outlet pick -->
+    <div class="cpanel" id="cpanel">
+      <div class="cpinner">
+        <div class="omini">
+          <div class="omini-av" id="cp-av">—</div>
+          <div style="flex:1;min-width:0">
+            <div class="omini-nm" id="cp-nm">—</div>
+            <div class="omini-sub" id="cp-sb">—</div>
+          </div>
+          <button class="change-btn" onclick="changeO()">Change</button>
+        </div>
+
+        <div class="sec" style="padding-top:0">Contract terms</div>
+
+        <div class="fg">
+          <div class="fl">Contract type <span class="req">*</span></div>
+          <div class="sw">
+            <select class="fi" id="ctype" onchange="clearErr('ctype')">
+              <option value="">Select type…</option>
+              <option>New Contract</option><option>Renewal</option><option>Upgrade</option>
+            </select>
+          </div>
+          <div class="ferr" id="e-ctype">Please select a contract type</div>
+        </div>
+
+        <div class="frow">
+          <div class="fg">
+            <div class="fl">Duration <span class="req">*</span></div>
+            <div class="sw"><select class="fi" id="cdur">
+              <option value="12">12 months</option>
+              <option value="24">24 months</option>
+              <option value="6">6 months</option>
+            </select></div>
+          </div>
+          <div class="fg">
+            <div class="fl">Category</div>
+            <div class="sw"><select class="fi" id="ccat">
+              <option>Volume Bound</option><option>Time Bound</option><option>Mixed</option>
+            </select></div>
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="fg">
+            <div class="fl">AMS capping <span class="fhint">(HL)</span></div>
+            <input class="fi" type="number" id="amscap" placeholder="e.g. 500" inputmode="decimal">
+          </div>
+          <div class="fg">
+            <div class="fl">Classification</div>
+            <div class="sw"><select class="fi" id="ocls">
+              <option>Premium</option><option>Standard</option><option>Budget</option>
+            </select></div>
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="fg">
+            <div class="fl">Segment</div>
+            <div class="sw"><select class="fi" id="mseg"><option>PM</option><option>EM</option></select></div>
+          </div>
+          <div class="fg">
+            <div class="fl">Geonote</div>
+            <div class="sw"><select class="fi" id="gnote"><option>YES</option><option>NO</option></select></div>
+          </div>
+        </div>
+
+        <div class="tgl-row">
+          <div>
+            <div class="tgl-nm">T2 pricing applies</div>
+            <div class="tgl-sb">Reduced rate for second-tier outlets</div>
+          </div>
+          <div class="tgl" id="t2tgl" onclick="toggleT2()"><div class="tgl-th"></div></div>
+        </div>
+        <div id="t2field" style="display:none">
+          <div class="fg">
+            <div class="fl">T2 rate vs T1 <span class="fhint">(%)</span></div>
+            <input class="fi" type="number" id="t2rate" placeholder="e.g. 90" inputmode="decimal">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Volumes + POSM -->
+  <div class="scr" id="s2">
+    <div class="info">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p>Use quick-pick buttons or tap the number field to type a volume. The calc bar above updates live.</p>
+    </div>
+    <div id="skulist"></div>
+
+    <div class="posm-hdr" onclick="togglePosm()">
+      <div>
+        <div class="posm-nm">POSM materials</div>
+        <div class="posm-sb" id="psub">Tap to add CNY2026 campaign materials</div>
+      </div>
+      <svg class="pchev" id="pchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="posm-body" id="pbody"><div id="pitems"></div></div>
+  </div>
+
+  <!-- STEP 3: Review -->
+  <div class="scr" id="s3"><div id="rcontent"></div></div>
+
+</div>
+
+<!-- CTA -->
+<div class="cta-area">
+  <button class="cta" id="ctabtn" onclick="handleCta()" disabled>
+    <span id="ctalbl">Select an outlet to continue</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </button>
+</div>
+
+</div>
+
+<script>
+const OUTLETS=[
+  {id:'O1',name:'Coconut Flower Restaurant',ucc:'KV-001234',ch:'Coffeeshop Channel',seg:'PM',init:'CF'},
+  {id:'O2',name:'The Alley KL',ucc:'KV-005678',ch:'Modern On Trade',seg:'PM',init:'TA'},
+  {id:'O3',name:"Marini's On 57",ucc:'KV-009012',ch:'Modern On Trade',seg:'PM',init:'M5'},
+  {id:'O4',name:'Heli Lounge Bar',ucc:'KV-003456',ch:'Pub/Bar Channel',seg:'PM',init:'HL'},
+  {id:'O5',name:'Havana Bar KLCC',ucc:'KV-007890',ch:'Pub/Bar Channel',seg:'PM',init:'HB'},
+  {id:'O6',name:'Zouk Club KL',ucc:'KV-006677',ch:'Modern On Trade',seg:'PM',init:'ZC'},
+  {id:'O7',name:'Nine 10 Media Cafe',ucc:'KV-008234',ch:'Coffeeshop Channel',seg:'PM',init:'NM'},
+  {id:'O8',name:'Restoran Chang Green',ucc:'KV-007612',ch:'Coffeeshop Channel',seg:'PM',init:'RC'},
+];
+
+const BRANDS=[
+  {n:'Heineken',s:[{p:'Quarts',k:'HEI_QTS',r:1.16},{p:'Pints',k:'HEI_PTS',r:1.40},{p:'Kegs',k:'HEI_KEG',r:1.50}]},
+  {n:'Guinness',s:[{p:'Quarts',k:'GUI_QTS',r:0.88},{p:'Pints',k:'GUI_PTS',r:1.10},{p:'Kegs',k:'GUI_KEG',r:1.50}]},
+  {n:'Tiger',s:[{p:'Quarts',k:'TIG_QTS',r:0.80},{p:'Pints',k:'TIG_PTS',r:1.00},{p:'Kegs',k:'TIG_KEG',r:1.20}]},
+  {n:'Tiger Crystal',s:[{p:'Quarts',k:'TCR_QTS',r:1.04},{p:'Pints',k:'TCR_PTS',r:1.10}]},
+  {n:'Tiger SojFL',s:[{p:'Pints',k:'TSJ_PTS',r:1.10}]},
+  {n:'Apple Fox',s:[{p:'Pints',k:'AFX_PTS',r:1.30},{p:'Kegs',k:'AFX_KEG',r:1.26}]},
+  {n:'Anchor',s:[{p:'Quarts',k:'ANC_QTS',r:0.784},{p:'Pints',k:'ANC_PTS',r:0.95}]},
+  {n:'Kilkenny',s:[{p:'Kegs',k:'KIL_KEG',r:1.32}]},
+  {n:'Edelweiss',s:[{p:'Pints',k:'EDL_PTS',r:1.10}]},
+];
+const ALLSKUS=BRANDS.flatMap(b=>b.s.map(s=>({...s,brand:b.n})));
+
+const POSMS=[
+  {name:'Bunting PAP 220g Heineken CNY26',key:'p1'},
+  {name:'Poster PAP 155g Guinness PriceOff CNY26',key:'p2'},
+  {name:'Banner PLA 200g Tiger NCP CNY26',key:'p3'},
+  {name:'Bunting Guinness PriceOff CNY26',key:'p4'},
+  {name:'Wobbler Tiger Crystal CNY26',key:'p5'},
+  {name:'Poster Tiger SojFL CNY26',key:'p6'},
+];
+
+const PRESETS=[10,25,50];
+let selO=null,vols={},posmQty={},t2On=false,posmOpen=false,step=1;
+
+// Init
+renderO(OUTLETS);
+buildSKUs();
+buildPOSM();
+
+// ── Outlets ──
+function filterO(q){renderO(OUTLETS.filter(o=>o.name.toLowerCase().includes(q.toLowerCase())||o.ucc.toLowerCase().includes(q.toLowerCase())));}
+
+function renderO(list){
+  document.getElementById('olist').innerHTML=list.map(o=>`
+    <div class="orow${selO&&selO.id===o.id?' sel':''}" onclick="pickO('${o.id}')">
+      <div class="oav">${o.init}</div>
+      <div style="flex:1;min-width:0"><div class="oname">${o.name}</div><div class="osub">${o.ucc} · ${o.ch}</div></div>
+      ${selO&&selO.id===o.id
+        ?`<div class="ochk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>`
+        :`<span class="otag">${o.seg}</span>`}
+    </div>`).join('');
+}
+
+function pickO(id){
+  selO=OUTLETS.find(o=>o.id===id);
+  renderO(OUTLETS);
+  const p=document.getElementById('cpanel');
+  p.classList.add('open');
+  document.getElementById('cp-av').textContent=selO.init;
+  document.getElementById('cp-nm').textContent=selO.name;
+  document.getElementById('cp-sb').textContent=selO.ucc+' · '+selO.ch;
+  document.getElementById('ntitle').textContent=selO.name;
+  document.getElementById('nsub').textContent='New Contract';
+  updCta();
+  setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),160);
+}
+
+function changeO(){
+  selO=null;
+  document.getElementById('cpanel').classList.remove('open');
+  document.getElementById('ntitle').textContent='New Contract';
+  document.getElementById('nsub').textContent='Select outlet to begin';
+  renderO(OUTLETS);
+  document.getElementById('mscroll').scrollTop=0;
+  updCta();
+}
+
+// ── SKUs ──
+function buildSKUs(){
+  document.getElementById('skulist').innerHTML=BRANDS.map(b=>{
+    const bk=b.n.replace(/\s/g,'_');
+    const tv=b.s.reduce((a,s)=>a+(vols[s.k]||0),0);
+    return `<div class="bcard">
+      <div class="bhdr">
+        <span class="bname">${b.n}</span>
+        <span class="btot${tv>0?' live':''}" id="bt-${bk}">${tv>0?tv.toFixed(1)+' HL total':'—'}</span>
+      </div>
+      ${b.s.map(s=>{
+        const v=vols[s.k]||0;
+        return `<div class="skrow">
+          <div class="sk-lft">
+            <div class="sk-pack">${s.p}</div>
+            <div class="sk-rate">MYR ${s.r.toFixed(2)}/HL</div>
+          </div>
+          <div class="sk-rgt">
+            <div class="presets">${PRESETS.map(p=>`<button class="pb${v===p?' ap':''}" onclick="setV('${s.k}',${p},this)">${p}</button>`).join('')}</div>
+            <input class="vi${v>0?' hv':''}" type="number" id="vi-${s.k}" value="${v||''}" placeholder="0"
+              inputmode="decimal" min="0" step="0.5"
+              oninput="onVI('${s.k}',this)" onfocus="this.select()">
+            <span class="sk-spend${v>0?' live':''}" id="ss-${s.k}">${v>0?'MYR '+(v*s.r).toFixed(0):'—'}</span>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+function setV(k,val,btn){
+  const cur=vols[k]||0, next=cur===val?0:val;
+  vols[k]=next>0?next:undefined;
+  const inp=document.getElementById('vi-'+k);
+  if(inp){inp.value=next||'';inp.className='vi'+(next>0?' hv':'');}
+  document.querySelectorAll(`button[onclick*="'${k}'"]`).forEach(b=>b.classList.toggle('ap',parseInt(b.textContent)===next&&next>0));
+  refreshSK(k); updCalc(); updBrandTot(k);
+}
+
+function onVI(k,inp){
+  const v=parseFloat(inp.value)||0;
+  vols[k]=v>0?v:undefined;
+  inp.className='vi'+(v>0?' hv':'');
+  document.querySelectorAll(`button[onclick*="'${k}'"]`).forEach(b=>{b.classList.remove('ap');if(PRESETS.includes(v)&&parseInt(b.textContent)===v)b.classList.add('ap');});
+  refreshSK(k); updCalc(); updBrandTot(k);
+}
+
+function refreshSK(k){
+  const s=ALLSKUS.find(x=>x.k===k); const v=vols[k]||0;
+  const el=document.getElementById('ss-'+k);
+  if(el){el.textContent=v>0?'MYR '+(v*s.r).toFixed(0):'—';el.className='sk-spend'+(v>0?' live':'');}
+}
+
+function updBrandTot(k){
+  const b=BRANDS.find(b=>b.s.some(s=>s.k===k));
+  if(!b)return;
+  const bk=b.n.replace(/\s/g,'_');
+  const tv=b.s.reduce((a,s)=>a+(vols[s.k]||0),0);
+  const el=document.getElementById('bt-'+bk);
+  if(el){el.textContent=tv>0?tv.toFixed(1)+' HL total':'—';el.className='btot'+(tv>0?' live':'');}
+}
+
+// ── POSM ──
+function buildPOSM(){
+  document.getElementById('pitems').innerHTML=POSMS.map(p=>`
+    <div class="pi">
+      <span class="pi-nm">${p.name}</span>
+      <div class="pi-step">
+        <button class="pi-btn" onclick="stepP('${p.key}',-1)">−</button>
+        <div class="pi-val" id="pv-${p.key}">${posmQty[p.key]||0}</div>
+        <button class="pi-btn" onclick="stepP('${p.key}',1)">+</button>
+      </div>
+    </div>`).join('');
+}
+
+function stepP(k,d){
+  posmQty[k]=Math.max(0,(posmQty[k]||0)+d);
+  const el=document.getElementById('pv-'+k);
+  if(el)el.textContent=posmQty[k];
+  const tot=Object.values(posmQty).reduce((a,b)=>a+b,0);
+  document.getElementById('psub').textContent=tot>0?`${tot} item${tot>1?'s':''} added`:'Tap to add CNY2026 campaign materials';
+}
+
+function togglePosm(){
+  posmOpen=!posmOpen;
+  document.getElementById('pbody').classList.toggle('open',posmOpen);
+  document.getElementById('pchev').classList.toggle('open',posmOpen);
+}
+
+// ── T2 ──
+function toggleT2(){
+  t2On=!t2On;
+  document.getElementById('t2tgl').classList.toggle('on',t2On);
+  document.getElementById('t2field').style.display=t2On?'block':'none';
+}
+
+// ── Calc ──
+function calcN(){
+  let tv=0,ts=0;
+  ALLSKUS.forEach(s=>{const v=vols[s.k]||0;tv+=v;ts+=v*s.r;});
+  const br=tv>0?ts/tv:0;
+  const gc=tv*405,net=gc-ts-gc*0.046;
+  const st=tv===0?'none':br<=1.2?'ok':br<=1.5?'warn':'over';
+  return{tv,ts,br,gc,net,st};
+}
+
+function updCalc(){
+  const{tv,br,net,st}=calcN();
+  document.getElementById('cbar').classList.toggle('dim',tv===0);
+  document.getElementById('cv').textContent=tv>0?tv.toFixed(1)+' HL':'—';
+  const re=document.getElementById('cr');
+  re.textContent=tv>0?'MYR '+br.toFixed(2)+'/HL':'—';
+  re.className='cs-val'+(st==='ok'?' g':st==='warn'?' w':st==='over'?' r':' g');
+  document.getElementById('cn').textContent=tv>0?'MYR '+net.toLocaleString('en-MY',{maximumFractionDigits:0}):'—';
+  const tag=document.getElementById('ctag');
+  if(tv>0&&st!=='none'){
+    tag.style.display='inline-block';
+    tag.textContent=st==='ok'?'On track':st==='warn'?'Check rate':'Over limit';
+    tag.className='cs-tag'+(st==='ok'?' ct-ok':st==='warn'?' ct-warn':' ct-over');
+  } else tag.style.display='none';
+}
+
+// ── Navigation ──
+function goto(n){
+  if(n<1||n>3)return;
+  if(n>1&&!selO){toast('Select an outlet first');return;}
+  if(n>1&&!document.getElementById('ctype').value){
+    document.getElementById('e-ctype').classList.add('show');
+    document.getElementById('ctype').classList.add('err');
+    toast('Fill in contract type first');
+    goto(1);return;
+  }
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s'+n).classList.add('on');
+  step=n;
+  updStepper(); updCta();
+  if(n===3)buildReview();
+  document.getElementById('mscroll').scrollTop=0;
+}
+
+function handleBack(){if(step>1)goto(step-1);}
+
+function handleCta(){
+  if(step===1){
+    if(!selO){toast('Please select an outlet');return;}
+    if(!document.getElementById('ctype').value){
+      document.getElementById('e-ctype').classList.add('show');
+      document.getElementById('ctype').classList.add('err');
+      document.getElementById('ctype').focus();return;
+    }
+    goto(2);
+  } else if(step===2){goto(3);}
+  else{submitC();}
+}
+
+function clearErr(id){
+  document.getElementById('e-'+id).classList.remove('show');
+  document.getElementById(id).classList.remove('err');
+  updCta();
+}
+
+function updCta(){
+  const btn=document.getElementById('ctabtn'),lbl=document.getElementById('ctalbl');
+  if(step===1){
+    if(!selO){lbl.textContent='Select an outlet to continue';btn.disabled=true;}
+    else{lbl.textContent='Continue to volumes';btn.disabled=false;}
+  } else if(step===2){
+    const{tv}=calcN();
+    lbl.textContent='Review proposal'+(tv===0?' (no volumes)':'');btn.disabled=false;
+  } else {lbl.textContent='Submit contract';btn.disabled=false;}
+}
+
+function updStepper(){
+  for(let i=1;i<=3;i++){
+    const c=document.getElementById('sc'+i),n=document.getElementById('sl'+i);
+    c.className='sc '+(i<step?'done':i===step?'active':'todo');
+    c.innerHTML=i<step?`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>`:`<span>${i}</span>`;
+    n.className='sl '+(i<step?'done':i===step?'active':'');
+    if(i<3)document.getElementById('ln'+i).className='step-line'+(i<step?' done':'');
+  }
+}
+
+// ── Review ──
+function buildReview(){
+  const{tv,ts,br,gc,net,st}=calcN();
+  const roy=gc*0.046;
+  const stLbl=st==='ok'?'Within guideline':st==='warn'?'Needs approval':'Above limit';
+  const skuA=ALLSKUS.filter(s=>(vols[s.k]||0)>0);
+  const posmA=POSMS.filter(p=>(posmQty[p.key]||0)>0);
+  const today=new Date().toLocaleDateString('en-MY',{day:'2-digit',month:'short',year:'numeric'});
+  const ref='HNK-'+Date.now().toString().slice(-6);
+  const bg=st==='ok'?'var(--green)':st==='warn'?'var(--amber)':'var(--red)';
+
+  document.getElementById('rcontent').innerHTML=`
+    <div class="rhero" style="background:${bg}">
+      <div><div class="rh-lbl">Volume</div><div class="rh-val">${tv.toFixed(1)}<span style="font-size:11px;opacity:.7"> HL</span></div></div>
+      <div><div class="rh-lbl">MYR/HL</div><div class="rh-val sm">MYR ${br.toFixed(2)}</div></div>
+      <div><div class="rh-lbl">Guideline</div><div class="rh-val sm">${stLbl}</div></div>
+    </div>
+
+    <div class="rcard">
+      <div class="rchdr"><span class="rct">Financials</span><span class="sp ${st}"><span class="sp-dot"></span>${stLbl}</span></div>
+      <div class="rrow"><span class="rl">Gross contribution</span><span class="rv">MYR ${gc.toLocaleString('en-MY',{maximumFractionDigits:0})}</span></div>
+      <div class="rrow"><span class="rl">Total STI spend</span><span class="rv r">−MYR ${ts.toLocaleString('en-MY',{maximumFractionDigits:0})}</span></div>
+      <div class="rrow"><span class="rl">Royalty (4.6%)</span><span class="rv r">−MYR ${roy.toLocaleString('en-MY',{maximumFractionDigits:0})}</span></div>
+      <div class="rrow total"><span class="rl">Net contribution</span><span class="rv ${st==='ok'?'g':st==='warn'?'w':'r'}">MYR ${net.toLocaleString('en-MY',{maximumFractionDigits:0})}</span></div>
+    </div>
+
+    <div class="rcard">
+      <div class="rchdr"><span class="rct">Contract</span><button class="rce" onclick="goto(1)">Edit</button></div>
+      <div class="rrow"><span class="rl">Outlet</span><span class="rv">${selO?.name}</span></div>
+      <div class="rrow"><span class="rl">Type · Duration</span><span class="rv">${document.getElementById('ctype').value||'—'} · ${document.getElementById('cdur').value}mo</span></div>
+      <div class="rrow"><span class="rl">Category · Segment</span><span class="rv">${document.getElementById('ccat').value} · ${document.getElementById('mseg').value}</span></div>
+      <div class="rrow"><span class="rl">AMS capping</span><span class="rv">${document.getElementById('amscap').value||'—'} HL</span></div>
+      ${t2On?`<div class="rrow"><span class="rl">T2 rate</span><span class="rv">${document.getElementById('t2rate').value||'—'}%</span></div>`:''}
+    </div>
+
+    ${skuA.length>0?`
+    <div class="rcard">
+      <div class="rchdr"><span class="rct">Volumes</span><button class="rce" onclick="goto(2)">Edit</button></div>
+      ${skuA.map(s=>`<div class="rrow"><span class="rl">${s.brand} ${s.p}</span><span class="rv">${(vols[s.k]||0).toFixed(1)} HL <span style="color:var(--text3);font-size:11px;font-weight:400">MYR ${((vols[s.k]||0)*s.r).toFixed(0)}</span></span></div>`).join('')}
+    </div>`:`<div class="rcard"><div class="rchdr"><span class="rct" style="color:var(--text3)">No volumes entered</span><button class="rce" onclick="goto(2)">Add</button></div></div>`}
+
+    ${posmA.length>0?`
+    <div class="rcard">
+      <div class="rchdr"><span class="rct">POSM</span><button class="rce" onclick="goto(2)">Edit</button></div>
+      ${posmA.map(p=>`<div class="rrow"><span class="rl">${p.name}</span><span class="rv">${posmQty[p.key]} pcs</span></div>`).join('')}
+    </div>`:''}
+
+    <!-- Proposal card -->
+    <div class="rcard" style="background:#002D1A">
+      <div style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:26px;height:26px;background:var(--green);border-radius:6px;display:flex;align-items:center;justify-content:center">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 16L10 4l6 12" stroke="#002D1A" stroke-width="2" fill="none" stroke-linejoin="round"/><circle cx="10" cy="6.5" r="2" fill="#002D1A"/></svg>
+          </div>
+          <span style="color:white;font-size:13px;font-weight:700">Heineken Malaysia</span>
+        </div>
+        <div style="text-align:right;color:rgba(255,255,255,.45);font-size:11px">Ref: ${ref}<br>${today}</div>
+      </div>
+      <div style="background:var(--white);padding:12px 14px">
+        <div class="rrow" style="border-color:var(--border)"><span class="rl">Outlet</span><span class="rv">${selO?.name}</span></div>
+        <div class="rrow" style="border-color:var(--border)"><span class="rl">Volume · Rate</span><span class="rv g">${tv.toFixed(1)} HL · MYR ${br.toFixed(2)}/HL</span></div>
+        <div class="rrow" style="border-bottom:none"><span class="rl">Net contribution</span><span class="rv">MYR ${net.toLocaleString('en-MY',{maximumFractionDigits:0})}</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:12px;margin-top:4px;border-top:.5px solid var(--border)">
+          <div style="border-top:1px solid #aaa;padding-top:6px"><div style="height:28px"></div><div style="font-size:10px;color:var(--text3)">Sales rep</div></div>
+          <div style="border-top:1px solid #aaa;padding-top:6px"><div style="height:28px"></div><div style="font-size:10px;color:var(--text3)">Outlet rep · ${selO?.name}</div></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="cta-ghost" id="aibtn" onclick="genL(this)">Generate AI cover letter</button>
+    <div id="aiarea" style="display:none">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);padding:10px 2px 4px">Cover letter</div>
+      <div class="ai-box loading" id="aibox">Generating…</div>
+    </div>
+  `;
+}
+
+async function genL(btn){
+  document.getElementById('aiarea').style.display='block';
+  btn.style.display='none';
+  const box=document.getElementById('aibox');
+  const{tv,br,net}=calcN();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:380,
+        messages:[{role:'user',content:`Write a short warm Heineken Malaysia trade proposal letter for ${selO?.name}. ${document.getElementById('ctype').value||'New Contract'}, ${document.getElementById('cdur').value} months, ${document.getElementById('ccat').value}. Volume ${tv.toFixed(1)} HL at MYR ${br.toFixed(2)}/HL. Net MYR ${net.toLocaleString('en-MY',{maximumFractionDigits:0})}. CNY2026 campaigns. 3 short paragraphs under 130 words. Sign off "Heineken Malaysia Trade Team".`}]})
+    });
+    const d=await r.json();
+    box.textContent=d.content?.filter(b=>b.type==='text').map(b=>b.text).join('')||'Could not generate.';
+    box.className='ai-box';
+  }catch{box.textContent='Could not generate. Try again.';box.className='ai-box';}
+}
+
+function submitC(){
+  const btn=document.getElementById('ctabtn'),lbl=document.getElementById('ctalbl');
+  btn.disabled=true;
+  lbl.innerHTML='<span class="spin"></span> Submitting…';
+  setTimeout(()=>{
+    const ref='HNK-'+Date.now().toString().slice(-6);
+    document.getElementById('mscroll').innerHTML=`
+      <div class="success">
+        <div class="sicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <div style="font-size:21px;font-weight:700;color:var(--text);margin-bottom:8px">Submitted!</div>
+        <div style="font-size:14px;color:var(--text3);line-height:1.6;margin-bottom:24px">Proposal for <strong style="color:var(--text)">${selO?.name}</strong> sent to Trade Promo Management for review.</div>
+        <div class="rcard" style="width:100%;text-align:left">
+          <div class="rrow"><span class="rl">Status</span><span class="sp ok"><span class="sp-dot"></span>Pending review</span></div>
+          <div class="rrow"><span class="rl">Reference</span><span class="rv" style="font-family:monospace;font-size:12px">${ref}</span></div>
+          <div class="rrow" style="border-bottom:none"><span class="rl">Submitted</span><span class="rv">${new Date().toLocaleString('en-MY',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</span></div>
+        </div>
+      </div>`;
+    document.querySelector('.cta-area').innerHTML=`
+      <button class="cta" onclick="location.reload()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="17" height="17"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        <span>Back to outlet list</span>
+      </button>`;
+    document.getElementById('stepper').style.opacity='.4';
+  },1400);
+}
+
+function toast(msg){
+  let t=document.getElementById('_t');
+  if(!t){t=document.createElement('div');t.id='_t';t.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(8px);background:#1C1C1E;color:white;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:500;z-index:999;opacity:0;transition:all .2s;white-space:nowrap;pointer-events:none';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';
+  clearTimeout(t._t);t._t=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(8px)';},2400);
+}
+</script>
+</body>
+</html>
